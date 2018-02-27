@@ -8,6 +8,7 @@ This bundle is a work in progress. Feel free to contribute!
 
 - Syntax highlighting
 - Indentation support
+- Auto lint on save
 
 ## Todo
 
@@ -16,7 +17,6 @@ This bundle is a work in progress. Feel free to contribute!
   - add mcl specific highlighting (missing comma at end of lines, variable assignment arrow, etc)
 - Allow to deploy a MCL file using `⌘R`
 - Templates and Macros
-- Auto lint on save (requires linter support in `mgmt`)
 
 ## Installation
 [Download](https://github.com/aequitas/mgmt.tmbundle/archive/master.zip), extract, rename to `mgmt.tmbundle` and doubleclick to install.
