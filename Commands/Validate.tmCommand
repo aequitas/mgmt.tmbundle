@@ -6,11 +6,25 @@
 	<string>nop</string>
 	<key>command</key>
 	<string>#!/usr/bin/env sh
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
 
-PATH=$TM_PROJECT_DIRECTORY:$PATH
+# runs on save; only notifies you if it raises a warning or error
+
+$TM_MATE "$TM_FILEPATH" --clear-mark warning --clear-mark error --clear-mark note
 
 if command -v mgmt &gt;/dev/null; then 
-  mgmt validate --lang -
+  mgmt validate --lang - | while read line; do
+  # MARK=$(echo "$line" | cut -d ':' -f 4)
+  # LINE=$(echo "$line" | cut -d ':' -f 2)
+  # NOTE=$(echo "$line" | cut -d ':' -f 3,4,5-10)
+  MARK=error
+  LINE=$(echo "$line" | sed -nE 's/.*@([0-9]+):[0-9]+/\1/p')
+  NOTE=$(echo "$line" | sed -nE 's/(.*)@[0-9]+:[0-9]+/\1/p')
+  if ! test -z "$LINE"; then
+    $TM_MATE "$TM_FILEPATH" --set-mark $MARK:"$NOTE" --line $LINE
+  fi
+  echo "$line"
+done;
 else
   echo "error: mgmt command not found"
 fi
